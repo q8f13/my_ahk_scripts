@@ -44,11 +44,7 @@ Return
 ; title can contains str anywhere to be a match
 SetTitleMatchMode, 2
 
-; key bindings below ====================================================================
-
-^!]:: SetDefaultEndpoint( GetDeviceID(Devices, "Nvidia") )
-^![:: SetDefaultEndpoint( GetDeviceID(Devices, "Realtek") )
-
+; functions ====================================================================
 
 SetDefaultEndpoint(DeviceID)
 {
@@ -64,8 +60,36 @@ GetDeviceID(Devices, Name)
             Return DeviceID
 }
 
+; Copy this function into your script to use it.
+HideTrayTip() {
+    TrayTip  ; Attempt to hide it the normal way.
+    ; if SubStr(A_OSVersion,1,3) = "10." {
+        ; Menu Tray, NoIcon
+        ; Sleep 200  ; It may be necessary to adjust this sleep.
+        ; Menu Tray, Icon
+    ; }
+}
 
-#n::
-MsgBox, 1
+; key bindings ====================================================================
+
+^!]::
+SetDefaultEndpoint( GetDeviceID(Devices, "Nvidia") )
+TrayTip, ,LG ULTRAWIDE activated
+Sleep 800
+HideTrayTip()
+Return
+^![::
+SetDefaultEndpoint( GetDeviceID(Devices, "Realtek") )
+TrayTip, ,Headphone activated
+Sleep 800
+HideTrayTip()
+Return
+
+
+; open device manager
+^#d::
+;Run rundll32.exe shell32.dll`,Control_RunDLL netcpl.cpl
+;Run rundll32.exe shell32.dll`,Control_RunDLL netcpl.cpl`,`, 0
+;Run rundll32.exe shell32.dll`,Control_RunDLL desk.cpl`,`, 3
 return
 
